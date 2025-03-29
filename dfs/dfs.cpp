@@ -1,4 +1,4 @@
-#include <vector>
+﻿#include <vector>
 #include <iostream>
 
 using namespace std;
@@ -6,7 +6,7 @@ using namespace std;
 void dfs(int node, vector<vector<int>> &graph, vector<bool> &visited, vector<int> &visitOrder)
 {
     visited[node] = true;
-    visitOrder.push_back(node); // 방문 순서 저장
+    visitOrder.push_back(node); 
 
     for (int i = 0; i < graph.size(); ++i)
     {
