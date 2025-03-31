@@ -40,7 +40,8 @@ int main(void)
     vector<vector<int>> computers = {
         {1, 1, 0},
         {1, 1, 0},
-        {0, 0, 1}};
+        {0, 0, 1}
+    };
 
     int answer = solution(3, computers);
     cout << answer << endl;
