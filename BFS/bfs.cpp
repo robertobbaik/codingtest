@@ -1,19 +1,43 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <unordered_map>
 
 using namespace std;
 
 vector<int> solution(vector<pair<int, int>> graph, int start)
 {
     vector<int> answer;
-    queue<int> q;
-    vector<bool> visited(graph.size(), false);
-    q.push(start);
+    // vector<vector<int>> new_graph()
 
-    while(!q.empty())
+    unordered_map<int, vector<int>> um;
+
+    for (const auto &p : graph)
     {
-        
+        um[p.first].push_back(p.second);
+        //um[p.second].push_back(p.first);
+    }
+
+    queue<int> q;
+
+    vector<bool> visited(um.size(), false);
+    q.push(start);
+    visited[start] = true;
+
+    while (!q.empty())
+    {
+        int i = q.front();
+        answer.push_back(i);
+        q.pop();
+
+        for (int n : um[i])
+        {
+            if (!visited[n])
+            {
+                visited[n] = true;
+                q.push(n);
+            }
+        }
     }
     return answer;
 }
@@ -21,16 +45,13 @@ vector<int> solution(vector<pair<int, int>> graph, int start)
 int main(void)
 {
     vector<pair<int, int>> graph = {
+
+        {0, 1},
         {1, 2},
-        {1, 3},
-        {2, 4},
-        {2, 5},
-        {3, 6},
-        {3, 7},
-        {4, 8},
-        {5, 8},
-        {6, 9},
-        {7, 9}
+        {2, 3},
+        {3, 4},
+        {4, 5},
+        {5, 0}
     };
 
     vector<int> result = solution(graph, 1);
