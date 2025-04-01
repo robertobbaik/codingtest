@@ -51,7 +51,7 @@ int main(void)
     }
 
 
-    dfs(1);
+    //dfs(1);
 
     cout << result << endl;
     return 0;
