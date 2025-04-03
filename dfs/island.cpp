@@ -12,11 +12,12 @@ int dy[8] = {-1, 1, 0, 0, -1, 1, -1, 1};
 void dfs(const vector<vector<int>> &land, vector<vector<bool>> &visited, int x, int y, int w, int h)
 {
     visited[y][x] = true;
+    //cout << y << " : " << x << endl;
 
     for (int i = 0; i < 8; i++)
     {
         int nx = x + dx[i];
-        int ny = y + dx[y];
+        int ny = y + dy[i];
 
         if (nx >= 0 && nx < w && ny >= 0 && ny < h)
         {
@@ -44,7 +45,7 @@ void printland(const vector<vector<int>> &land)
 
 int main(void)
 {
-    freopen("island.txt", "r", stdin);
+    //freopen("island.txt", "r", stdin);
 
     while (true)
     {
@@ -70,7 +71,7 @@ int main(void)
 
         for (int i = 0; i < h; i++)
         {
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < w; j++)
             {
                 if (land[i][j] == 1 && !visited[i][j])
                 {
