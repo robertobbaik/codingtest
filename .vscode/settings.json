@@ -6,6 +6,9 @@
         "algorithm": "cpp",
         "iterator": "cpp",
         "xhash": "cpp",
-        "xmemory": "cpp"
+        "xmemory": "cpp",
+        "iostream": "cpp",
+        "stack": "cpp",
+        "utility": "cpp"
     }
 }

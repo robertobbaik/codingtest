@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <algorithm>
 
+// Visited를 효율적으로 관리해야함
+
 using namespace std;
 
 int dx[4] = {0, 0, -1, 1};
