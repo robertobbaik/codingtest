@@ -1,9 +1,2 @@
- for(const auto& v : project)
-    {
-        for(int n : v)
-        {
-            cout << n << " ";
-        }
-
-        cout << endl;
-    }
+ dfs(picture, visited, j, i, N, 'R');
+                count++;

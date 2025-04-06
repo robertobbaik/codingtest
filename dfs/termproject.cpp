@@ -1,24 +1,38 @@
 #include <iostream>
 #include <vector>
 
+//1	2 3	4 5	6 7
+//3	1 3	7 3	4 6
+
 using namespace std;
 
 int team_count = 0;
-vector<bool> visited;
+vector<int> visited;
+vector<int> path;
 
-void dfs(const vector<int> &project, int next, int start)
+void dfs(const vector<int> &project, int student)
 {
-    if (project[next] == start)
-    {
-        team_count++;
-    }
-    else
-    {
-        if (project[next] == next)
-            return;
+    visited[student] = 1; 
+    path.push_back(student); 
+    int next = project[student]; 
 
-        dfs(project, project[next], start);
+    if(visited[next] == 0)
+    {
+        dfs(project, next);
     }
+    else if(visited[next] == 1)
+    {
+        for(int i = 0; i < path.size(); i++)
+        {
+            if(path[i] == next)
+            {
+                team_count += path.size() - i;
+                break;
+            }
+        }
+    }
+    visited[student] = 2;
+    path.pop_back();
 }
 
 int main(void)
@@ -35,10 +49,8 @@ int main(void)
         int student_count;
         cin >> student_count;
         vector<int> want_case(student_count + 1, 0);
-        for (int i = 0; i < student_count + 1; i++)
+        for (int i = 1; i < student_count + 1; i++)
         {
-            if (i == 0)
-                continue;
             cin >> want_case[i];
         }
 
@@ -47,18 +59,18 @@ int main(void)
 
     for (const auto &v : project)
     {
-        visited.clear();
-        visited.resize(v.size(), false);
+        team_count = 0;
+        visited.assign(v.size(), 0);
+        path.clear();
         for (int i = 1; i < v.size(); i++)
         {
-            if (!visited[i])
+            if (visited[i] == 0)
             {
-                dfs(v, i, i);
+                dfs(v, i);
             }
         }
 
         cout << (v.size() - 1 - team_count) << endl;
-        team_count = 0;
     }
 
     return 0;
