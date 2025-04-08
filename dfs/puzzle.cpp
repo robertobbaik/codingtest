@@ -51,6 +51,8 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table)
         }
     }
 
+    //
+
     vector<vector<pair<int, int>>> temp2;
     visited.assign(N, vector<bool>(N, false));
     for (int i = 0; i < N; i++)
