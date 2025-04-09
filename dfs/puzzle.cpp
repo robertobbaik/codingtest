@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -30,6 +31,35 @@ void dfs(const vector<vector<int>> &board, vector<vector<bool>> &visited, vector
     }
 }
 
+vector<pair<int, int>> rotate(const vector<pair<int, int>> &block)
+{
+    vector<pair<int, int>> result;
+
+    for (const auto &[x, y] : block)
+    {
+        result.push_back({y, -x});
+    }
+
+    int minX = INT_MAX;
+    int minY = INT_MAX;
+
+    for (auto &[x, y] : result)
+    {
+        minX = min(minX, x);
+        minY = min(minY, y);
+    }
+
+    for (auto &[x, y] : result)
+    {
+        x -= minX;
+        y -= minY;
+    }
+
+    sort(result.begin(), result.end());
+
+    return result;
+}
+
 int solution(vector<vector<int>> game_board, vector<vector<int>> table)
 {
     int answer = -1;
@@ -51,8 +81,6 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table)
         }
     }
 
-    //
-
     vector<vector<pair<int, int>>> temp2;
     visited.assign(N, vector<bool>(N, false));
     for (int i = 0; i < N; i++)
@@ -68,22 +96,24 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table)
         }
     }
 
+    cout << "Hole" << endl;
     for (const auto &v : temp)
     {
         for (pair<int, int> p : v)
         {
-            cout << "{"<<p.first << " : " << p.second << "} ";
+            cout << "{" << p.first << ", " << p.second << "} ";
         }
         cout << endl;
     }
 
     cout << "---------------------" << endl;
 
+    cout << "Block" << endl;
     for (const auto &v : temp2)
     {
         for (pair<int, int> p : v)
         {
-            cout << "{"<<p.first << " : " << p.second << "} ";
+            cout << "{" << p.first << ", " << p.second << "} ";
         }
         cout << endl;
     }
@@ -110,5 +140,36 @@ int main(void)
         {0, 1, 0, 0, 0, 0}};
 
     int result = solution(game_board, table);
+
+    cout << "--------test---------" << endl;
+
+    vector<pair<int, int>> test = {{0, 0}, {0, 1}, {0, 2}, {-1, 1}};
+
+    for (int i = 0; i < 4; i++)
+    {
+        test = rotate(test);
+        for (const auto &[x, y] : test)
+        {
+            cout << "{" << x << ", " << y << "}" << " ";
+        }
+        cout << endl;
+    }
+
+    cout << "--------test2---------" << endl;
+
+    vector<pair<int, int>> test2 = {{0, 0}, {0, 1}, {-1, 1}, {1, 1}};
+
+    for (int i = 0; i < 4; i++)
+    {
+        test2 = rotate(test2);
+        for (const auto &[x, y] : test2)
+        {
+            cout << "{" << x << ", " << y << "}" << " ";
+        }
+        cout << endl;
+    }
+
+    //
+
     return 0;
 }
