@@ -9,6 +9,7 @@
         "xmemory": "cpp",
         "iostream": "cpp",
         "stack": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "xstring": "cpp"
     }
 }

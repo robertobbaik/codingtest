@@ -2,11 +2,28 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
 int dx[4] = {0, 0, -1, 1};
 int dy[4] = {-1, 1, 0, 0};
+
+bool is_match(const vector<pair<int, int>> &a, const vector<pair<int, int>> &b)
+{
+    if (a.size() != b.size())
+        return false;
+
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (a[i] != b[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 void dfs(const vector<vector<int>> &board, vector<vector<bool>> &visited, vector<pair<int, int>> &vp, pair<int, int> next, pair<int, int> base, int N, int target)
 {
@@ -31,14 +48,9 @@ void dfs(const vector<vector<int>> &board, vector<vector<bool>> &visited, vector
     }
 }
 
-vector<pair<int, int>> rotate(const vector<pair<int, int>> &block)
+vector<pair<int, int>> normalize(const vector<pair<int, int>> &block)
 {
-    vector<pair<int, int>> result;
-
-    for (const auto &[x, y] : block)
-    {
-        result.push_back({y, -x});
-    }
+    vector<pair<int, int>> result = block;
 
     int minX = INT_MAX;
     int minY = INT_MAX;
@@ -56,18 +68,31 @@ vector<pair<int, int>> rotate(const vector<pair<int, int>> &block)
     }
 
     sort(result.begin(), result.end());
+    return result;
+}
+
+vector<pair<int, int>> rotate(const vector<pair<int, int>> &block)
+{
+    vector<pair<int, int>> result;
+
+    for (const auto &[x, y] : block)
+    {
+        result.push_back({y, -x});
+    }
+
+    result = normalize(result);
 
     return result;
 }
 
 int solution(vector<vector<int>> game_board, vector<vector<int>> table)
 {
-    int answer = -1;
+    int answer = 0;
     int count = 0;
     int N = game_board.size();
 
     vector<vector<bool>> visited(N, vector<bool>(N, false));
-    vector<vector<pair<int, int>>> temp;
+    vector<vector<pair<int, int>>> blanks;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -76,12 +101,12 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table)
             {
                 vector<pair<int, int>> vp;
                 dfs(game_board, visited, vp, {j, i}, {j, i}, N, 0);
-                temp.push_back(vp);
+                blanks.push_back(normalize(vp));
             }
         }
     }
 
-    vector<vector<pair<int, int>>> temp2;
+    vector<vector<pair<int, int>>> pieces;
     visited.assign(N, vector<bool>(N, false));
     for (int i = 0; i < N; i++)
     {
@@ -91,32 +116,41 @@ int solution(vector<vector<int>> game_board, vector<vector<int>> table)
             {
                 vector<pair<int, int>> vp;
                 dfs(table, visited, vp, {j, i}, {j, i}, N, 1);
-                temp2.push_back(vp);
+                pieces.push_back(vp);
             }
         }
     }
 
-    cout << "Hole" << endl;
-    for (const auto &v : temp)
+    vector<bool> piece_used(pieces.size(), false);
+
+    for (auto &blank : blanks)
     {
-        for (pair<int, int> p : v)
+        for (int j = 0; j < pieces.size(); j++)
         {
-            cout << "{" << p.first << ", " << p.second << "} ";
+            if (piece_used[j] || blank.size() != pieces[j].size())
+                continue;
+
+            vector<pair<int, int>> rotated = normalize(pieces[j]);
+            bool matched = false;
+
+            for (int r = 0; r < 4; r++)
+            {
+                if (is_match(blank, rotated))
+                {
+                    answer += rotated.size();
+                    piece_used[j] = true;
+                    matched = true;
+                    break;
+                }
+                rotated = rotate(rotated);
+            }
+
+            if (matched)
+                break;
         }
-        cout << endl;
     }
 
-    cout << "---------------------" << endl;
-
-    cout << "Block" << endl;
-    for (const auto &v : temp2)
-    {
-        for (pair<int, int> p : v)
-        {
-            cout << "{" << p.first << ", " << p.second << "} ";
-        }
-        cout << endl;
-    }
+    cout << answer << endl;
 
     return answer;
 }
@@ -140,36 +174,6 @@ int main(void)
         {0, 1, 0, 0, 0, 0}};
 
     int result = solution(game_board, table);
-
-    cout << "--------test---------" << endl;
-
-    vector<pair<int, int>> test = {{0, 0}, {0, 1}, {0, 2}, {-1, 1}};
-
-    for (int i = 0; i < 4; i++)
-    {
-        test = rotate(test);
-        for (const auto &[x, y] : test)
-        {
-            cout << "{" << x << ", " << y << "}" << " ";
-        }
-        cout << endl;
-    }
-
-    cout << "--------test2---------" << endl;
-
-    vector<pair<int, int>> test2 = {{0, 0}, {0, 1}, {-1, 1}, {1, 1}};
-
-    for (int i = 0; i < 4; i++)
-    {
-        test2 = rotate(test2);
-        for (const auto &[x, y] : test2)
-        {
-            cout << "{" << x << ", " << y << "}" << " ";
-        }
-        cout << endl;
-    }
-
-    //
 
     return 0;
 }
