@@ -27,7 +27,6 @@ int main(void)
             cin >> seat_num;
             if ((trains[train_num - 1] & (1 << (seat_num - 1))) == 0)
             {
-                //cout << (1 << (seat_num - 1)) << endl;
                 trains[train_num - 1] += (1 << (seat_num - 1));
             }
             break;
