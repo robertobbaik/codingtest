@@ -11,6 +11,7 @@
         "stack": "cpp",
         "utility": "cpp",
         "xstring": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "tuple": "cpp"
     }
 }
