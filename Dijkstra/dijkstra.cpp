@@ -17,21 +17,20 @@ struct Compare
     }
 };
 
-
 vector<int> solution(int start, int numNodes, vector<tuple<int, int, int>> edges)
 {
     vector<int> answer;
     vector<vector<pair<int, int>>> adjList(numNodes);
     for(const auto& [from, to, weight] : edges)
     {
-        adjList[from].emplace_back(to, weight);
+        adjList[from].push_back({to, weight});
     }
 
     vector<int> distances(numNodes, INF);
     distances[start] = 0;
 
     priority_queue<pair<int, int>, vector<pair<int, int>>, Compare> pq;
-    pq.push({0, start});
+    pq.push({0, start}); //거리와 시작점 (나 자신에게서 시작하기 때문에 거리는 0)
 
     vector<bool> visited(numNodes, false);
 
