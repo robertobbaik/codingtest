@@ -30,7 +30,7 @@ vector<int> solution(int start, int numNodes, vector<tuple<int, int, int>> edges
     distances[start] = 0;
 
     priority_queue<pair<int, int>, vector<pair<int, int>>, Compare> pq;
-    pq.push({0, start}); //°Å¸®¿Í ½ÃÀÛÁ¡ (³ª ÀÚ½Å¿¡°Ô¼­ ½ÃÀÛÇÏ±â ¶§¹®¿¡ °Å¸®´Â 0)
+    pq.push({0, start}); //ê±°ë¦¬ì™€ ì‹œì‘ì  (ë‚˜ ìì‹ ì—ê²Œì„œ ì‹œì‘í•˜ê¸° ë•Œë¬¸ì— ê±°ë¦¬ëŠ” 0)
 
     vector<bool> visited(numNodes, false);
 
