@@ -12,6 +12,7 @@
         "utility": "cpp",
         "xstring": "cpp",
         "xlocale": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "unordered_map": "cpp"
     }
 }
