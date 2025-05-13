@@ -40,12 +40,6 @@ int main(void)
         if (commands[i][0] == 1)
         {
             sequence[(commands[i][1] - 1)] = commands[i][2];
-
-            // for(int n : sequence)
-            // {
-            //     cout << n << " ";
-            // }
-            // cout << endl;
         }
         else
         {
