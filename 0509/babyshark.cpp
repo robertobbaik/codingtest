@@ -10,7 +10,7 @@ int dy[4] = {1, -1, 0, 0};
 int main(void)
 {
     freopen("babyshark.txt", "r", stdin);
-
+ 
     int N;
 
     cin >> N;
