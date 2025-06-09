@@ -10,6 +10,8 @@ bool dfs(vector<vector<string>>& tickets, string current, vector<string>& route,
     {
         
     }
+
+    return false;
 }
 
 vector<string> solution(vector<vector<string>> tickets)
