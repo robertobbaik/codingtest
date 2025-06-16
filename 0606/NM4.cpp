@@ -18,7 +18,7 @@ void backtracing(vector<int> &arr, int depth, int start, int N, int M)
     for (int i = start; i <= N; i++)
     {
         arr[depth] = i;
-        backtracing(arr, depth + 1, i, N, M);
+        backtracing(arr, depth + 1, i, N, M); 
     }
 }
 
