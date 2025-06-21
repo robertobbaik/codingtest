@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+//https://www.acmicpc.net/problem/1941
+
 using namespace std;
 
 int answer = 0;
