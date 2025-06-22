@@ -1,112 +1,147 @@
 #include <iostream>
-#include <deque>
 #include <vector>
-#include <tuple>
+#include <deque>
+#include <queue>
 #include <numeric>
 
 using namespace std;
 
-int dx[4] = {-1, 1, 0, 0};
-int dy[4] = {0, 0, -1, 1};
+int dx[4] = {-1, 1, 0, 0}; // 상하
+int dy[4] = {0, 0, -1, 1}; // 좌우 (원형 연결)
 
-void dfs(vector<deque<int>> &circles, vector<vector<bool>> &visited, int x, int y, int N, int M)
+// 회전 함수
+void rotate(deque<int> &dq, int dir, int k)
 {
-    visited[x][y] = true;
-    for (int i = 0; i < 4; i++)
+    k %= dq.size();
+    if (dir == 0)
     {
-        int nx = x + dx[i];
-        int ny = y + dy[i];
-
-        if (nx >= 0 && nx < N && ny >= 0 && ny < M)
+        for (int i = 0; i < k; ++i)
         {
-            if (!visited[nx][ny] && circles[nx][ny] != 0)
+            dq.push_front(dq.back());
+            dq.pop_back();
+        }
+    }
+    else
+    {
+        for (int i = 0; i < k; ++i)
+        {
+            dq.push_back(dq.front());
+            dq.pop_front();
+        }
+    }
+}
+
+// 인접한 숫자 제거
+bool eraseAdjacent(vector<deque<int>> &board, int N, int M)
+{
+    bool erased = false;
+    vector<vector<bool>> visited(N, vector<bool>(M, false));
+
+    for (int x = 0; x < N; ++x)
+    {
+        for (int y = 0; y < M; ++y)
+        {
+            if (board[x][y] == 0 || visited[x][y])
+                continue;
+
+            int val = board[x][y];
+            queue<pair<int, int>> q;
+            vector<pair<int, int>> group = {{x, y}};
+            visited[x][y] = true;
+            q.push({x, y});
+
+            while (!q.empty())
             {
-                if (circles[x][y] == circles[nx][ny])
+                auto [cx, cy] = q.front();
+                q.pop();
+                for (int d = 0; d < 4; ++d)
                 {
-                    circles[x][y] = 0;
-                    circles[nx][ny] = 0;
+                    int nx = cx + dx[d];
+                    int ny = (cy + dy[d] + M) % M;
+
+                    if (nx < 0 || nx >= N)
+                        continue;
+                    if (visited[nx][ny])
+                        continue;
+                    if (board[nx][ny] != val)
+                        continue;
+
+                    visited[nx][ny] = true;
+                    q.push({nx, ny});
+                    group.push_back({nx, ny});
                 }
+            }
+
+            if (group.size() > 1)
+            {
+                for (auto [gx, gy] : group)
+                    board[gx][gy] = 0;
+                erased = true;
             }
         }
     }
+
+    return erased;
 }
 
-void rotate(deque<int> &dq, int direction, int count)
+// 평균 조정
+void adjustAverage(vector<deque<int>> &board, int N, int M)
 {
-    for (int i = 0; i < count; i++)
-    {
-        if (direction == 0)
-        {
-            int n = dq.back();
-            dq.pop_back();
-            dq.push_front(n);
-        }
-        else
-        {
-            int n = dq.front();
-            dq.pop_front();
-            dq.push_back(n);
-        }
-    }
+    int sum = 0, count = 0;
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < M; ++j)
+            if (board[i][j] != 0)
+            {
+                sum += board[i][j];
+                count++;
+            }
+
+    if (count == 0)
+        return;
+
+    double avg = (double)sum / count;
+
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < M; ++j)
+            if (board[i][j] != 0)
+            {
+                if (board[i][j] > avg)
+                    board[i][j]--;
+                else if (board[i][j] < avg)
+                    board[i][j]++;
+            }
 }
 
-int main(void)
+int main()
 {
     ios::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    freopen("rotate.txt", "r", stdin);
+    cin.tie(nullptr);
 
     int N, M, T;
-
     cin >> N >> M >> T;
 
-    vector<deque<int>> circle(N, deque<int>(M, 0));
+    vector<deque<int>> board(N, deque<int>(M));
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < M; ++j)
+            cin >> board[i][j];
 
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < M; j++)
-        {
-            cin >> circle[i][j];
-        }
-    }
-
-    for (int i = 0; i < T; i++)
+    while (T--)
     {
         int x, d, k;
         cin >> x >> d >> k;
 
-        for (int j = 0; j < N; j++)
-        {
-            if ((j + 1) % x == 0)
-            {
-                rotate(circle[j], d, k);
-            }
-        }
+        for (int i = 0; i < N; ++i)
+            if ((i + 1) % x == 0)
+                rotate(board[i], d, k);
+
+        if (!eraseAdjacent(board, N, M))
+            adjustAverage(board, N, M);
     }
 
-    vector<vector<bool>> visited(N, vector<bool>(M, false));
+    int result = 0;
+    for (int i = 0; i < N; ++i)
+        result += accumulate(board[i].begin(), board[i].end(), 0);
 
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < M; j++)
-        {
-            if (!visited[i][j] && circle[i][j] != 0)
-            {
-                dfs(circle, visited, i, j, N, M);
-            }
-        }
-    }
-
-    int sum = 0;
-
-    for (int i = 0; i < N; i++)
-    {
-       int temp = accumulate(circle[i].begin(), circle[i].end(), 0);
-       sum += temp;
-    }
-
-    cout << sum << endl;
-
+    cout << result << '\n';
     return 0;
 }
