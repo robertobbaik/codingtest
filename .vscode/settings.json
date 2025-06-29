@@ -18,6 +18,7 @@
         "initializer_list": "cpp",
         "list": "cpp",
         "xtree": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "iosfwd": "cpp"
     }
 }
