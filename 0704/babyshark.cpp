@@ -76,16 +76,14 @@ int main()
         }
 
         if (fishList.empty())
-            break; // 먹을 수 있는 물고기 없음
+            break; 
 
-        // 가장 가까운 물고기 중 위쪽, 왼쪽 우선으로 정렬
         sort(fishList.begin(), fishList.end(), [](const auto &a, const auto &b)
              {
             if (a.first != b.first) return a.first < b.first;
             if (a.second.first != b.second.first) return a.second.first < b.second.first;
             return a.second.second < b.second.second; });
-
-        // 물고기 먹기
+        
         int fishX = fishList[0].second.first;
         int fishY = fishList[0].second.second;
         int moveTime = fishList[0].first;
