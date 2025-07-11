@@ -20,6 +20,7 @@
         "xtree": "cpp",
         "xiosbase": "cpp",
         "iosfwd": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "ios": "cpp"
     }
 }
