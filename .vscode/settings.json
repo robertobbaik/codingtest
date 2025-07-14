@@ -21,6 +21,7 @@
         "xiosbase": "cpp",
         "iosfwd": "cpp",
         "cmath": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "numeric": "cpp"
     }
 }
