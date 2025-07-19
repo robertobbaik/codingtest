@@ -1,11 +1,11 @@
 #include <iostream>
-#include <vector>
+#include <cmath>
 
 using namespace std;
 
-int main(void)
+int main()
 {
-    string s = "[[1,2,1],[1,3,2],[2,3,2],[3,4,3],[3,5,2],[3,5,3],[5,6,1]]";
+    string s  = "[[5,3],[11,5],[13,3],[3,5],[6,1],[1,3],[8,6],[7,2],[2,2]]";
 
     for(int i = 0; i < s.size(); i++)
     {
@@ -13,13 +13,15 @@ int main(void)
         {
             s[i] = '{';
         }
-        else if(s[i]==']')
+        else if(s[i] == ']')
         {
             s[i] = '}';
         }
+
     }
 
     cout << s << endl;
 
+
     return 0;
-}	
+}
