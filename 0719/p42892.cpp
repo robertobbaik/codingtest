@@ -45,6 +45,43 @@ Node *insertNode(Node *root, Node *newNode)
     return root;
 }
 
+void preorder(Node *node, vector<int> &result)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    result.push_back(node->id);
+    preorder(node->left, result);
+    preorder(node->right, result);
+}
+
+void postorder(Node *node, vector<int> &result)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    postorder(node->left, result);
+    postorder(node->right, result);
+    result.push_back(node->id);
+}
+
+void inorder(Node *node, vector<int> &result)
+{
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    inorder(node->left, result);
+    result.push_back(node->id);
+    inorder(node->right, result);
+    
+}
+
 vector<vector<int>> solution(vector<vector<int>> nodeinfo)
 {
     vector<vector<int>> answer;
@@ -64,6 +101,35 @@ vector<vector<int>> solution(vector<vector<int>> nodeinfo)
 
         root = insertNode(root, newNode);
     }
+    vector<int> pre;
+    preorder(root, pre);
+    vector<int> post;
+    postorder(root, post);
+
+    vector<int> in;
+    inorder(root, in);
+
+    for(int n : pre)
+    {
+        cout << n << " ";
+    }
+
+    cout << endl;
+
+    for(int n : in)
+    {
+        cout << n << " ";
+    }
+
+    cout << endl;
+
+    for(int n : post)
+    {
+        cout << n << " ";
+    }
+
+    answer.push_back(pre);
+    answer.push_back(post);
 
     return answer;
 }
@@ -72,6 +138,5 @@ int main(void)
 {
     vector<vector<int>> result = solution({{5, 3}, {11, 5}, {13, 3}, {3, 5}, {6, 1}, {1, 3}, {8, 6}, {7, 2}, {2, 2}});
 
-    
     return 0;
 }
