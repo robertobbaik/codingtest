@@ -19,7 +19,7 @@ int main()
 	cin >> n >> m;
 
 	vector<vector<int>> board(n, vector<int>(m, 0));
-
+	vector<vector<int>> distance(n, vector<int>(m, -1));
 	pair<int, int> start = {0, 0};
 
 	for (int i = 0; i < n; i++)
@@ -30,19 +30,21 @@ int main()
 			if (board[i][j] == 2)
 			{
 				start = {i, j};
+				distance[i][j] = 0;
+			}
+			else if (board[i][j] == 0)
+			{
+				distance[i][j] = 0;
 			}
 		}
 	}
 
-	vector<vector<int>> distance(n, vector<int>(m, 0));
-
-	queue<tuple<int, int, int>> q;
-
-	q.push({start.first, start.second, 0});
+	queue<pair<int, int>> q;
+	q.push(start);
 
 	while (!q.empty())
 	{
-		auto [x, y, d] = q.front();
+		auto [x, y] = q.front();
 		q.pop();
 
 		for (int i = 0; i < 4; i++)
@@ -52,19 +54,18 @@ int main()
 
 			if (nx >= 0 && nx < n && ny >= 0 && ny < m)
 			{
-				if (board[nx][ny] == 1)
+				if (board[nx][ny] == 1 && distance[nx][ny] == -1)
 				{
-					board[nx][ny] = 0;
-					distance[nx][ny] = d + 1;
-					q.push({nx, ny, d + 1});
+					distance[nx][ny] = distance[x][y] + 1;
+					q.push({nx, ny});
 				}
 			}
 		}
 	}
 
-	for(vector<int> v : distance)
+	for (vector<int> v : distance)
 	{
-		for(int n : v)
+		for (int n : v)
 		{
 			cout << n << " ";
 		}
