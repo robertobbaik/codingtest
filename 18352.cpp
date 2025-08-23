@@ -1,10 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
-
-const int INF = 1e9;
 
 int main()
 {
@@ -13,8 +12,9 @@ int main()
 	cin >> N >> M >> K >> X;
 
 	vector<vector<int>> graph(N + 1);
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-	vector<int> distance(N + 1, INF);
+	queue<pair<int, int>> q;
+	vector<bool> visited(N + 1);
+	vector<int> result;
 
 	for (int i = 0; i < M; i++)
 	{
@@ -24,18 +24,44 @@ int main()
 		graph[start].push_back(end);
 	}
 
-	distance[X] = 0;
-
-	pq.push({X, 0});
-
-	while(!pq.empty())
+	q.push({X, 0});
+	visited[X] = true;
+	while (!q.empty())
 	{
-		auto [dist, startNode] = pq.top();
-		pq.pop();
+		auto [node, count] = q.front();
 
-		
+		q.pop();
+
+		if (count == K)
+		{
+			result.push_back(node);
+
+			continue;
+		}
+
+		for (int next : graph[node])
+		{
+			if (!visited[next])
+			{
+				visited[next] = true;
+				q.push({next, count + 1});
+			}
+		}
 	}
 
-	
+	if (result.size() > 0)
+	{
+		sort(result.begin(), result.end());
+
+		for (int n : result)
+		{
+			cout << n << "\n";
+		}
+	}
+	else
+	{
+		cout << -1 << endl;
+	}
+
 	return 0;
 }
