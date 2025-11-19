@@ -17,13 +17,13 @@ public:
     {
         int value = heap.front();
         heap.pop_front();
-        bubbleUp(heap.size() -1);
+        bubbleUp(heap.size() - 1);
         return value;
     }
 
     void print()
     {
-        for( int n : heap)
+        for (int n : heap)
         {
             cout << n << " ";
         }
@@ -54,7 +54,7 @@ private:
 
 int main(void)
 {
-    MaxHeap* maxHeap = new MaxHeap();
+    MaxHeap *maxHeap = new MaxHeap();
 
     maxHeap->enqueue(8);
     maxHeap->enqueue(4);
