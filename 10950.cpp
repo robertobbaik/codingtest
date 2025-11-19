@@ -3,6 +3,14 @@ using namespace std;
 
 int main()
 {
-	// 코드 작성
+	int T;
+	cin >> T;
+	while(T--)
+	{
+		int A, B;
+		cin >> A >> B;
+
+		cout << A + B << endl;
+	}
 	return 0;
 }
