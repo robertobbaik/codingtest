@@ -6,7 +6,7 @@ using namespace std;
 vector<vector<pair<int, int>>> tree;
 vector<bool> visited;
 int max_dist = 0;
-int farthest_node = 0;
+int farthest_node = 1;
 
 void dfs(int node, int dist)
 {
@@ -35,37 +35,30 @@ int main()
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int V;
-	cin >> V;
+	int n;
+	cin >> n;
 
-	tree.assign(V + 1, vector<pair<int, int>>());
-	visited.assign(V + 1, false);
+	tree.assign(n + 1, vector<pair<int, int>>());
+	visited.assign(n + 1, false);
 
-	for (int i = 1; i < V + 1; ++i)
+	for (int i = 0; i < n; i++)
 	{
-		int node;
-		cin >> node;
+		int v;
+		cin >> v;
 
-		while (true)
-		{
-			int adj;
-			cin >> adj;
-			if (adj == -1)
-			{
-				break;
-			}
+		int edge, weight;
+		cin >> edge >>  weight;
 
-			int weight;
-			cin >> weight;
-			tree[node].push_back({adj, weight});
-		}
+		tree[v].push_back({edge, weight});
+		tree[edge].push_back({v, weight});
 	}
 
 	dfs(1, 0);
 
-	visited.assign(V + 1, false);
+	visited.assign(n + 1, false);
 	max_dist = 0;
 	dfs(farthest_node, 0);
+
 	cout << max_dist << '\n';
 
 	return 0;
